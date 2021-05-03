@@ -1,0 +1,67 @@
+Вводим php artisan make:model -m Test_Table
+И артисан создаёт нам и модель и миграцию
+Миграция:
+"
+class CreateTestsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('tests', function (Blueprint $table) {
+            $table->id();
+            $table->integer('parent_id')->references('id')->on('parents');//тут нужно знать имя родительской таблицы,чтобы сссылаться на её id,будем считать,что её имя 'parents'
+            $table->string('name',20);
+            $table->text('description');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('tests');
+    }
+}
+"
+Т.к. нам нужен ещё и родительская таблица,то создаём и её 
+php artisan make:model -m Parent
+Миграция:
+"
+
+class CreateParentsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('parents', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('parents');
+    }
+}
+
+
+"
+
